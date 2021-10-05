@@ -1,0 +1,1 @@
+python3 -m rl.main --prefix pick_ICLR2019_seed789 --env JacoPick-v1 --num_rollouts 10000 --hrl False --seed 789 --is_train False --record True

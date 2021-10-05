@@ -17,57 +17,56 @@ To install the dependencies below:
 * pip install -U 'mujoco-py<2.1,>=2.0'
 * sudo apt-get update && sudo apt-get install libopenmpi-dev
 
-#### Note that if you want to see the same result in the paper, follow instruction_obstacle.txt and instruction_patrol.txt We prepared all of the networks in data folder, so it's able to skip the training procedure and test the results. The commands below are for Obstacle course. Please refer to instruction_patrol.txt for Patrol.
+#### Note that follow instruction_xxx.txt. We prepared the pre-trained policies provided by Lee et al. 2019.
 
-### Prepare pre-trained policy for Obstacle course (Walk, Jump Crawl)
-* Walk
-<pre>
-<code>
-python -m main --hrl False --train True --exp_name ppo_forward --env Walker2dForwardHmap-v1 --primitive_algo ppo --seed 5348 --epochs 1500 --entcoeff 0.0
-</code>
-</pre>
-* Jump
-<pre>
-<code>
-python -m main --hrl False --train True --exp_name ppo_jump --env Walker2dJumpHmap-v1 --primitive_algo ppo --seed 5348 --epochs 2000 --entcoeff 0.004
-</code>
-</pre>
-* Crawl
-<pre>
-<code>
-python -m main --hrl False --train True --exp_name ppo_crawl --env Walker2dCrawlHmap-v1 --primitive_algo ppo --seed 5348 --epochs 2000 --entcoeff 0.001
-</code>
-</pre>
 
 ### Collect data of pre-trained policy for Obstacle course (Walk, Jump Crawl)
-* Walk (front)
+* Walk for Jump (front)
 <pre>
 <code>
-python -m main --hrl False --train False --collect_exp_data True --env Walker2dForwardHmap-v1 --suffix front_5348 --primitive_algo ppo --primitive_weight_path data/ppo_forward/ppo_forward_s5348/pyt_save/model.pt
+python -m main --hrl False --train False --complex_task obstacle --collect_exp_data True --env Walker2dJump-v1 --suffix wfj --primitive_env Walker2dForward-v1 --primitive_path data/Walker2dForward.forward_ICLR2019
 </code>
 </pre>
-* Jump (front)
+* Walk for Jump (rear)
 <pre>
 <code>
-python -m main --hrl False --train False --collect_exp_data True --env Walker2dJumpHmap-v1 --suffix front_5348 --primitive_algo ppo --primitive_weight_path data/ppo_jump/ppo_jump_s5348/pyt_save/model.pt
+python -m main --hrl False --train False --complex_task obstacle --collect_exp_data True --env Walker2dJump-v1 --front False --suffix wrj --primitive_env Walker2dForward-v1 --primitive_path data/Walker2dForward.forward_ICLR2019
 </code>
 </pre>
-* Crawl (front)
+* Walk for Crawl (front)
 <pre>
 <code>
-python -m main --hrl False --train False --collect_exp_data True --env Walker2dCrawlHmap-v1 --suffix front_5348 --primitive_algo ppo --primitive_weight_path data/ppo_crawl/ppo_crawl_s5348/pyt_save/model.pt
+python -m main --hrl False --train False --complex_task obstacle --collect_exp_data True --env Walker2dCrawl-v1 --suffix wfc --primitive_env Walker2dForward-v1 --primitive_path data/Walker2dForward.forward_ICLR2019
 </code>
 </pre>
-* Jump (rear)
+* Walk for Crawl (rear)
 <pre>
 <code>
-python -m main --hrl False --train False --collect_exp_data True --env Walker2dJumpHmap-v1 --front False --suffix rear_5348 --primitive_algo ppo --primitive_weight_path data/ppo_jump/ppo_jump_s5348/pyt_save/model.pt
+python -m main --hrl False --train False --complex_task obstacle --collect_exp_data True --env Walker2dCrawl-v1 --front False --suffix wrc --primitive_env Walker2dForward-v1 --primitive_path data/Walker2dForward.forward_ICLR201
 </code>
 </pre>
-* Crawl (rear)
+* Jump for Walk (front)
 <pre>
 <code>
-python -m main --hrl False --train False --collect_exp_data True --env Walker2dCrawlHmap-v1 --front False --suffix rear_5348 --primitive_algo ppo --primitive_weight_path data/ppo_crawl/ppo_crawl_s5348/pyt_save/model.pt
+python -m main --hrl False --train False --complex_task obstacle --collect_exp_data True --env Walker2dJump-v1 --suffix jf --primitive_env Walker2dJump-v1 --primitive_path data/Walker2dJump.jump_ICLR2019
+</code>
+</pre>
+* Jump for Walk (rear)
+<pre>
+<code>
+python -m main --hrl False --train False --complex_task obstacle --collect_exp_data True --env Walker2dJump-v1 --front False --suffix jr --primitive_env Walker2dJump-v1 --primitive_path data/Walker2dJump.jump_ICLR2019
+</code>
+</pre>
+* Crawl for Walk (front)
+<pre>
+<code>
+python -m main --hrl False --train False --complex_task obstacle --collect_exp_data True --env Walker2dCrawl-v1 --suffix cf --primitive_env Walker2dCrawl-v1 --primitive_path data/Walker2dCrawl.crawl_ICLR2019
+</code>
+</pre>
+* Crawl for Walk (rear)
+<pre>
+<code>
+python -m main --hrl False --train False --complex_task obstacle --collect_exp_data True --env Walker2dCrawl-v1 --front False --suffix cr --primitive_env Walker2dCrawl-v1 --primitive_path data/Walker2dCrawl.crawl_ICLR2019
 </code>
 </pre>
 
@@ -75,39 +74,39 @@ python -m main --hrl False --train False --collect_exp_data True --env Walker2dC
 * Walk -> Jump
 <pre>
 <code>
-python -m main --hrl False --train True --irl_training True --env Walker2dJumpHmap-v1 --exp_data_path_1 data/exp_demo/Walker2dForwardHmap-v1_front_5348 --exp_data_path_2 data/exp_demo/Walker2dJumpHmap-v1_front_5348 --env_1 forward_5348 --env_2 jump_5348
-</code>
-</pre>
-* Walk -> Crawl
-<pre>
-<code>
-python -m main --hrl False --train True --irl_training True --env Walker2dCrawlHmap-v1 --exp_data_path_1 data/exp_demo/Walker2dForwardHmap-v1_front_5337 --exp_data_path_2 data/exp_demo/Walker2dCrawlHmap-v1_front_5337 --env_1 forward_5337 --env_2 crawl_5337
+python -m main --hrl False --train True --complex_task obstacle --irl_training True --env Walker2dJump-v1 --exp_data_path_1 data/exp_demo/Walker2dForward-v1_wfj --exp_data_path_2 data/exp_demo/Walker2dJump-v1_jr --env_1 obstacle_walk --env_2 jump
 </code>
 </pre>
 * Jump -> Walk
 <pre>
 <code>
-python -m main --hrl False --train True --irl_training True --env Walker2dJumpHmap-v1 --front False --exp_data_path_1 data/exp_demo/Walker2dJumpHmap-v1_rear_5348 --exp_data_path_2 data/exp_demo/Walker2dForwardHmap-v1_front_5348 --env_1 jump_5348 --env_2 forward_5348
+python -m main --hrl False --train True --complex_task obstacle --irl_training True --env Walker2dJump-v1 --front False --exp_data_path_1 data/exp_demo/Walker2dJump-v1_jf --exp_data_path_2 data/exp_demo/Walker2dForward-v1_wrj --env_1 obstacle_jump --env_2 walk
+</code>
+</pre>
+* Walk -> Crawl
+<pre>
+<code>
+python -m main --hrl False --train True --complex_task obstacle --irl_training True --env Walker2dCrawl-v1 --exp_data_path_1 data/exp_demo/Walker2dForward-v1_wfc --exp_data_path_2 data/exp_demo/Walker2dCrawl-v1_cr --env_1 obstacle_walk --env_2 crawl
 </code>
 </pre>
 * Crawl -> Walk
 <pre>
 <code>
-python -m main --hrl False --train True --irl_training True --env Walker2dCrawlHmap-v1 --front False --exp_data_path_1 data/exp_demo/Walker2dCrawlHmap-v1_rear_5348 --exp_data_path_2 data/exp_demo/Walker2dForwardHmap-v1_front_5348 --env_1 crawl_5348 --env_2 forward_5348
+python -m main --hrl False --train True --complex_task obstacle --irl_training True --env Walker2dCrawl-v1 --front False --exp_data_path_1 data/exp_demo/Walker2dCrawl-v1_cf --exp_data_path_2 data/exp_demo/Walker2dForward-v1_wrc --env_1 obstacle_crawl --env_2 walk
 </code>
 </pre>
 
 ### Train DQNs for Obstacle course
 <pre>
 <code>
-python -m main --hrl True --train True --complex_task obstacle --env Walker2dObstacleCourseHmap-v1 --pi1 data/ppo_forward/ppo_forward_s5348/pyt_save/model.pt --pi2 data/ppo_jump/ppo_jump_s5348/pyt_save/model.pt --pi3 data/ppo_crawl/ppo_crawl_s5348/pyt_save/model.pt --pi12 data/transition/forward_5348_jump_5348/step10000000/model.pt --pi21 data/transition/jump_5348_forward_5348/step10000000/model.pt --pi13 data/transition/forward_5348_crawl_5348/step10000000/model.pt --pi31 data/transition/crawl_5348_forward_5348/step10000000/model.pt --fname obstacle_5348
+python -m main --hrl True --train True --complex_task obstacle --env Walker2dObstacleCourse-v1 --pi1_env Walker2dForward-v1 --pi2_env Walker2dJump-v1 --pi3_env Walker2dCrawl-v1 --pi1 data/Walker2dForward.forward_ICLR2019 --pi2 data/Walker2dJump.jump_ICLR2019 --pi3 data/Walker2dCrawl.crawl_ICLR2019 --pi12 data/transition/obstacle_walk_jump/step10000000/model.pt --pi21 data/transition/obstacle_jump_walk/step10000000/model.pt --pi13 data/transition/obstacle_walk_crawl/step10000000/model.pt --pi31 data/transition/obstacle_crawl_walk/step10000000/model.pt --fname obstacle
 </code>
 </pre>
 
 ### Test trained networks
 <pre>
 <code>
-python -m main --hrl True --train Fasle --complex_task obstacle --env Walker2dObstacleCourseHmap-v1 --pi1 data/ppo_forward/ppo_forward_s5348/pyt_save/model.pt --pi2 data/ppo_jump/ppo_jump_s5348/pyt_save/model.pt --pi3 data/ppo_crawl/ppo_crawl_s5348/pyt_save/model.pt --pi12 data/transition/forward_5348_jump_5348/step10000000/model.pt --pi21 data/transition/jump_5348_forward_5348/step10000000/model.pt --pi13 data/transition/forward_5348_crawl_5348/step10000000/model.pt --pi31 data/transition/crawl_5348_forward_5348/step10000000/model.pt --q12 data/q_network/obstacle_5348/10000_q12.pt --q21 data/q_network/obstacle_5348/10000_q21.pt --q13 data/q_network/obstacle_5348/10000_q13.pt --q31 data/q_network/obstacle_5348/10000_q31.pt
+python -m main --hrl True --train Fasle --complex_task obstacle --env Walker2dObstacleCourse-v1 --pi1_env Walker2dForward-v1 --pi2_env Walker2dJump-v1 --pi3_env Walker2dCrawl-v1 --pi1 data/Walker2dForward.forward_ICLR2019 --pi2 data/Walker2dJump.jump_ICLR2019 --pi3 data/Walker2dCrawl.crawl_ICLR2019 --pi12 data/transition/obstacle_walk_jump/step10000000/model.pt --pi21 data/transition/obstacle_jump_walk/step10000000/model.pt --pi13 data/transition/obstacle_walk_crawl/step10000000/model.pt --pi31 data/transition/obstacle_crawl_walk/step10000000/model.pt --q12 data/q_network/obstacle/30000_q12.pt --q21 data/q_network/obstacle/30000_q21.pt --q13 data/q_network/obstacle/30000_q13.pt --q31 data/q_network/obstacle/30000_q31.pt
 </code>
 </pre>
 

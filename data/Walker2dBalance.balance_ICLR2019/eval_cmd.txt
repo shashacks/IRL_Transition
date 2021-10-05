@@ -1,0 +1,1 @@
+python3 -m rl.main --prefix balance_ICLR2019_seed123 --env Walker2dBalance-v1 --num_rollouts 10000 --hrl False --seed 123 --is_train False --record True

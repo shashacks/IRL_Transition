@@ -1,63 +1,19 @@
 
 <Collect data of pre-trained policy for Serve>
 --(front toss)--
-python -m main --hrl False --train False --complex_task serve --collect_exp_data True --env JacoServe-v1 --suffix front_123 --seed 123 --primitive_env JacoToss-v1 --primitive_path data/JacoToss.toss_ICLR2019_seed123
-python -m main --hrl False --train False --complex_task serve --collect_exp_data True --env JacoServe-v1 --suffix front_456 --seed 456 --primitive_env JacoToss-v1 --primitive_path data/JacoToss.toss_ICLR2019_seed456
-python -m main --hrl False --train False --complex_task serve --collect_exp_data True --env JacoServe-v1 --suffix front_789 --seed 789 --primitive_env JacoToss-v1 --primitive_path data/JacoToss.toss_ICLR2019_seed789
+python -m main --hrl False --train False --complex_task serve --collect_exp_data True --env JacoServe-v1 --suffix front --primitive_env JacoToss-v1 --primitive_path data/JacoToss.toss_ICLR2019
 --(rear hit)--
-python -m main --hrl False --train False --complex_task serve --collect_exp_data True --env JacoHit-v1 --front False --suffix rear_123 --seed 123 --primitive_env JacoHit-v1 --primitive_path data/JacoHit.hit_ICLR2019_seed123
-python -m main --hrl False --train False --complex_task serve --collect_exp_data True --env JacoHit-v1 --front False --suffix rear_456 --seed 456 --primitive_env JacoHit-v1 --primitive_path data/JacoHit.hit_ICLR2019_seed456
-python -m main --hrl False --train False --complex_task serve --collect_exp_data True --env JacoHit-v1 --front False --suffix rear_789 --seed 789 --primitive_env JacoHit-v1 --primitive_path data/JacoHit.hit_ICLR2019_seed789
+python -m main --hrl False --train False --complex_task serve --collect_exp_data True --env JacoHit-v1 --front False --suffix rear --primitive_env JacoHit-v1 --primitive_path data/JacoHit.hit_ICLR2019
 
 
 <Train transition policy for Serve>
 --(serve)--
-python -m main --hrl False --train True --irl_training True --complex_task serve --env JacoServe-v1 --exp_data_path_1 data/exp_demo/JacoToss-v1_front_123 --exp_data_path_2 data/exp_demo/JacoHit-v1_rear_123 --env_1 toss_123 --env_2 hit_123_s123 --seed 123
-python -m main --hrl False --train True --irl_training True --complex_task serve --env JacoServe-v1 --exp_data_path_1 data/exp_demo/JacoToss-v1_front_456 --exp_data_path_2 data/exp_demo/JacoHit-v1_rear_456 --env_1 toss_456 --env_2 hit_456_s456 --seed 456
-python -m main --hrl False --train True --irl_training True --complex_task serve --env JacoServe-v1 --exp_data_path_1 data/exp_demo/JacoToss-v1_front_789 --exp_data_path_2 data/exp_demo/JacoHit-v1_rear_789 --env_1 toss_789 --env_2 hit_789_s789 --seed 789
+python -m main --hrl False --train True --irl_training True --complex_task serve --env JacoServe-v1 --exp_data_path_1 data/exp_demo/JacoToss-v1_front --exp_data_path_2 data/exp_demo/JacoHit-v1_rear --env_1 toss --env_2 hit
 
 
 <Train Q network for Pick>
-python -m main --hrl True --train True --complex_task serve --env JacoServe-v1 --pi1_env JacoToss-v1 --pi2_env JacoHit-v1 --pi1 data/JacoToss.toss_ICLR2019_seed123 --pi2 data/JacoHit.hit_ICLR2019_seed123 --pi12 data/transition/toss_123_hit_123_s123/step10000000/model.pt --fname serve_123_s123 --seed 123
-python -m main --hrl True --train True --complex_task serve --env JacoServe-v1 --pi1_env JacoToss-v1 --pi2_env JacoHit-v1 --pi1 data/JacoToss.toss_ICLR2019_seed456 --pi2 data/JacoHit.hit_ICLR2019_seed456 --pi12 data/transition/toss_456_hit_456_s456/step10000000/model.pt --fname serve_456_s456 --seed 456
-python -m main --hrl True --train True --complex_task serve --env JacoServe-v1 --pi1_env JacoToss-v1 --pi2_env JacoHit-v1 --pi1 data/JacoToss.toss_ICLR2019_seed789 --pi2 data/JacoHit.hit_ICLR2019_seed789 --pi12 data/transition/toss_789_hit_789_s789/step10000000/model.pt --fname serve_789_s789 --seed 789
-
+python -m main --hrl True --train True --complex_task serve --env JacoServe-v1 --pi1_env JacoToss-v1 --pi2_env JacoHit-v1 --pi1 data/JacoToss.toss_ICLR2019 --pi2 data/JacoHit.hit_ICLR2019 --pi12 data/transition/toss_hit/step10000000/model.pt --fname serve
 
 <Evaluate trained networks>
-
---expand--
-
-<Train transition policy for Serve>
---(serve)--
-python -m main --hrl False --train True --irl_training True --complex_task serve --env JacoServe-v1 --exp_data_path_1 data/exp_demo/JacoToss-v1_front_123 --exp_data_path_2 data/exp_demo/JacoHit-v1_rear_123 --env_1 toss_123 --env_2 hit_123_s123 --seed 123
-python -m main --hrl False --train True --irl_training True --complex_task serve --env JacoServe-v1 --exp_data_path_1 data/exp_demo/JacoToss-v1_front_123 --exp_data_path_2 data/exp_demo/JacoHit-v1_rear_123 --env_1 toss_123 --env_2 hit_123_s456 --seed 456
-python -m main --hrl False --train True --irl_training True --complex_task serve --env JacoServe-v1 --exp_data_path_1 data/exp_demo/JacoToss-v1_front_123 --exp_data_path_2 data/exp_demo/JacoHit-v1_rear_123 --env_1 toss_123 --env_2 hit_123_s789 --seed 789
-
-python -m main --hrl False --train True --irl_training True --complex_task serve --env JacoServe-v1 --exp_data_path_1 data/exp_demo/JacoToss-v1_front_789 --exp_data_path_2 data/exp_demo/JacoHit-v1_rear_789 --env_1 toss_789 --env_2 hit_789_s123 --seed 123
-python -m main --hrl False --train True --irl_training True --complex_task serve --env JacoServe-v1 --exp_data_path_1 data/exp_demo/JacoToss-v1_front_789 --exp_data_path_2 data/exp_demo/JacoHit-v1_rear_789 --env_1 toss_789 --env_2 hit_789_s456 --seed 456
-python -m main --hrl False --train True --irl_training True --complex_task serve --env JacoServe-v1 --exp_data_path_1 data/exp_demo/JacoToss-v1_front_789 --exp_data_path_2 data/exp_demo/JacoHit-v1_rear_789 --env_1 toss_789 --env_2 hit_789_s789 --seed 789
-
-
-<Train Q network for Pick>
-python -m main --hrl True --train True --complex_task serve --env JacoServe-v1 --pi1_env JacoToss-v1 --pi2_env JacoHit-v1 --pi1 data/JacoToss.toss_ICLR2019_seed123 --pi2 data/JacoHit.hit_ICLR2019_seed123 --pi12 data/transition/toss_123_hit_123_s123/step10000000/model.pt --fname serve_123_s123 --seed 123
-python -m main --hrl True --train True --complex_task serve --env JacoServe-v1 --pi1_env JacoToss-v1 --pi2_env JacoHit-v1 --pi1 data/JacoToss.toss_ICLR2019_seed123 --pi2 data/JacoHit.hit_ICLR2019_seed123 --pi12 data/transition/toss_123_hit_123_s456/step10000000/model.pt --fname serve_123_s456 --seed 456
-python -m main --hrl True --train True --complex_task serve --env JacoServe-v1 --pi1_env JacoToss-v1 --pi2_env JacoHit-v1 --pi1 data/JacoToss.toss_ICLR2019_seed123 --pi2 data/JacoHit.hit_ICLR2019_seed123 --pi12 data/transition/toss_123_hit_123_s789/step10000000/model.pt --fname serve_123_s789 --seed 789
-
-
-python -m main --hrl True --train True --complex_task serve --env JacoServe-v1 --pi1_env JacoToss-v1 --pi2_env JacoHit-v1 --pi1 data/JacoToss.toss_ICLR2019_seed789 --pi2 data/JacoHit.hit_ICLR2019_seed789 --pi12 data/transition/toss_789_hit_789_s123/step10000000/model.pt --fname serve_789_s123 --seed 123
-python -m main --hrl True --train True --complex_task serve --env JacoServe-v1 --pi1_env JacoToss-v1 --pi2_env JacoHit-v1 --pi1 data/JacoToss.toss_ICLR2019_seed789 --pi2 data/JacoHit.hit_ICLR2019_seed789 --pi12 data/transition/toss_789_hit_789_s456/step10000000/model.pt --fname serve_789_s456 --seed 456
-python -m main --hrl True --train True --complex_task serve --env JacoServe-v1 --pi1_env JacoToss-v1 --pi2_env JacoHit-v1 --pi1 data/JacoToss.toss_ICLR2019_seed789 --pi2 data/JacoHit.hit_ICLR2019_seed789 --pi12 data/transition/toss_789_hit_789_s789/step10000000/model.pt --fname serve_789_s789 --seed 789
-
-<Evaluate trained networks>
-python -m main --hrl True --train Fasle --complex_task serve --env JacoServe-v1 --pi1_env JacoToss-v1 --pi2_env JacoHit-v1 --pi1 data/JacoToss.toss_ICLR2019_seed123 --pi2 data/JacoHit.hit_ICLR2019_seed123 --pi12 data/transition/toss_123_hit_123_s123/step10000000/model.pt --q12 data/q_network/serve_123_s123/42000_q12.pt --seed 123
-python -m main --hrl True --train Fasle --complex_task serve --env JacoServe-v1 --pi1_env JacoToss-v1 --pi2_env JacoHit-v1 --pi1 data/JacoToss.toss_ICLR2019_seed123 --pi2 data/JacoHit.hit_ICLR2019_seed123 --pi12 data/transition/toss_123_hit_123_s456/step10000000/model.pt --q12 data/q_network/serve_123_s456/49000_q12.pt --seed 456
-python -m main --hrl True --train Fasle --complex_task serve --env JacoServe-v1 --pi1_env JacoToss-v1 --pi2_env JacoHit-v1 --pi1 data/JacoToss.toss_ICLR2019_seed123 --pi2 data/JacoHit.hit_ICLR2019_seed123 --pi12 data/transition/toss_123_hit_123_s789/step10000000/model.pt --q12 data/q_network/serve_123_s789/42000_q12.pt --seed 789
-
-python -m main --hrl True --train Fasle --complex_task serve --env JacoServe-v1 --pi1_env JacoToss-v1 --pi2_env JacoHit-v1 --pi1 data/JacoToss.toss_ICLR2019_seed456 --pi2 data/JacoHit.hit_ICLR2019_seed456 --pi12 data/transition/toss_456_hit_456_s123/step10000000/model.pt --q12 data/q_network/serve_456_s123/15000_q12.pt --seed 123
-python -m main --hrl True --train Fasle --complex_task serve --env JacoServe-v1 --pi1_env JacoToss-v1 --pi2_env JacoHit-v1 --pi1 data/JacoToss.toss_ICLR2019_seed456 --pi2 data/JacoHit.hit_ICLR2019_seed456 --pi12 data/transition/toss_456_hit_456_s456/step10000000/model.pt --q12 data/q_network/serve_456_s456/15000_q12.pt --seed 456
-python -m main --hrl True --train Fasle --complex_task serve --env JacoServe-v1 --pi1_env JacoToss-v1 --pi2_env JacoHit-v1 --pi1 data/JacoToss.toss_ICLR2019_seed456 --pi2 data/JacoHit.hit_ICLR2019_seed456 --pi12 data/transition/toss_456_hit_456_s789/step10000000/model.pt --q12 data/q_network/serve_456_s789/15000_q12.pt --seed 789
-
-python -m main --hrl True --train Fasle --complex_task serve --env JacoServe-v1 --pi1_env JacoToss-v1 --pi2_env JacoHit-v1 --pi1 data/JacoToss.toss_ICLR2019_seed789 --pi2 data/JacoHit.hit_ICLR2019_seed789 --pi12 data/transition/toss_789_hit_789_s123/step10000000/model.pt --q12 data/q_network/serve_789_s123/50000_q12.pt --seed 123
-python -m main --hrl True --train Fasle --complex_task serve --env JacoServe-v1 --pi1_env JacoToss-v1 --pi2_env JacoHit-v1 --pi1 data/JacoToss.toss_ICLR2019_seed789 --pi2 data/JacoHit.hit_ICLR2019_seed789 --pi12 data/transition/toss_789_hit_789_s456/step10000000/model.pt --q12 data/q_network/serve_789_s456/50000_q12.pt --seed 456
-python -m main --hrl True --train Fasle --complex_task serve --env JacoServe-v1 --pi1_env JacoToss-v1 --pi2_env JacoHit-v1 --pi1 data/JacoToss.toss_ICLR2019_seed789 --pi2 data/JacoHit.hit_ICLR2019_seed789 --pi12 data/transition/toss_789_hit_789_s789/step10000000/model.pt --q12 data/q_network/serve_789_s789/50000_q12.pt --seed 789
+python -m main --hrl True --train Fasle --complex_task serve --env JacoServe-v1 --pi1_env JacoToss-v1 --pi2_env JacoHit-v1 --pi1 data/JacoToss.toss_ICLR2019 --pi2 data/JacoHit.hit_ICLR2019 --pi12 data/transition/toss_hit/step10000000/model.pt --q12 data/q_network/serve/25000_q12.pt
 
