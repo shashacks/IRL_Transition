@@ -1,1 +1,118 @@
-# Submission_IRL_Transition_Adjust
+# Submission_IRL_Transtion
+
+## Descriptions
+Composing simple skills is natural for humans to achieve complex tasks. Since traditional Reinforcement Learning has limitations on these complex tasks, research on hierarchical structures has been received significant attention. In this paper, we introduce transition policies that smoothly connect pre-trained policies corresponding to simple skills. Each pre-trained policy has a different distribution because they are trained for each particular task, which means that the transition between policies must proceed carefully. Our transition policies are trained through the distribution matching induced in Inverse Reinforcement Learning. A transition policy starts with states from a pre-trained policy and matches it with another pre-trained policy distribution. In addition, to increase the success of the transition rate, we utilize Deep Q-networks to determine when the transition should occur, trained using the simulated success-fail data. We demonstrate our method on continuous bipedal locomotion tasks, requiring diverse skills. We show that our method enables us to smoothly connect the pre-trained policies, improving performance over training only a single policy.
+
+## Dependencies
+To install the dependencies below:
+* conda create -n [name] python=3.6
+* conda install pytorch==1.3.0 torchvision==0.4.1 cudatoolkit=11.0 -c pytorch
+* pip install mpi4py
+* pip install joblib
+* pip install tensorboard
+* pip install scipy
+* pip install cloudpickle
+* pip install psutil
+* pip install tqdm
+* pip install -U 'mujoco-py<2.1,>=2.0'
+* sudo apt-get update && sudo apt-get install libopenmpi-dev
+
+#### Note that if you want to see the same result in the paper, follow instruction_obstacle.txt and instruction_patrol.txt We prepared all of the networks in data folder, so it's able to skip the training procedure and test the results. The commands below are for Obstacle course. Please refer to instruction_patrol.txt for Patrol.
+
+### Prepare pre-trained policy for Obstacle course (Walk, Jump Crawl)
+* Walk
+<pre>
+<code>
+python -m main --hrl False --train True --exp_name ppo_forward --env Walker2dForwardHmap-v1 --primitive_algo ppo --seed 5348 --epochs 1500 --entcoeff 0.0
+</code>
+</pre>
+* Jump
+<pre>
+<code>
+python -m main --hrl False --train True --exp_name ppo_jump --env Walker2dJumpHmap-v1 --primitive_algo ppo --seed 5348 --epochs 2000 --entcoeff 0.004
+</code>
+</pre>
+* Crawl
+<pre>
+<code>
+python -m main --hrl False --train True --exp_name ppo_crawl --env Walker2dCrawlHmap-v1 --primitive_algo ppo --seed 5348 --epochs 2000 --entcoeff 0.001
+</code>
+</pre>
+
+### Collect data of pre-trained policy for Obstacle course (Walk, Jump Crawl)
+* Walk (front)
+<pre>
+<code>
+python -m main --hrl False --train False --collect_exp_data True --env Walker2dForwardHmap-v1 --suffix front_5348 --primitive_algo ppo --primitive_weight_path data/ppo_forward/ppo_forward_s5348/pyt_save/model.pt
+</code>
+</pre>
+* Jump (front)
+<pre>
+<code>
+python -m main --hrl False --train False --collect_exp_data True --env Walker2dJumpHmap-v1 --suffix front_5348 --primitive_algo ppo --primitive_weight_path data/ppo_jump/ppo_jump_s5348/pyt_save/model.pt
+</code>
+</pre>
+* Crawl (front)
+<pre>
+<code>
+python -m main --hrl False --train False --collect_exp_data True --env Walker2dCrawlHmap-v1 --suffix front_5348 --primitive_algo ppo --primitive_weight_path data/ppo_crawl/ppo_crawl_s5348/pyt_save/model.pt
+</code>
+</pre>
+* Jump (rear)
+<pre>
+<code>
+python -m main --hrl False --train False --collect_exp_data True --env Walker2dJumpHmap-v1 --front False --suffix rear_5348 --primitive_algo ppo --primitive_weight_path data/ppo_jump/ppo_jump_s5348/pyt_save/model.pt
+</code>
+</pre>
+* Crawl (rear)
+<pre>
+<code>
+python -m main --hrl False --train False --collect_exp_data True --env Walker2dCrawlHmap-v1 --front False --suffix rear_5348 --primitive_algo ppo --primitive_weight_path data/ppo_crawl/ppo_crawl_s5348/pyt_save/model.pt
+</code>
+</pre>
+
+### Train transition policies for Obstacle course
+* Walk -> Jump
+<pre>
+<code>
+python -m main --hrl False --train True --irl_training True --env Walker2dJumpHmap-v1 --exp_data_path_1 data/exp_demo/Walker2dForwardHmap-v1_front_5348 --exp_data_path_2 data/exp_demo/Walker2dJumpHmap-v1_front_5348 --env_1 forward_5348 --env_2 jump_5348
+</code>
+</pre>
+* Walk -> Crawl
+<pre>
+<code>
+python -m main --hrl False --train True --irl_training True --env Walker2dCrawlHmap-v1 --exp_data_path_1 data/exp_demo/Walker2dForwardHmap-v1_front_5337 --exp_data_path_2 data/exp_demo/Walker2dCrawlHmap-v1_front_5337 --env_1 forward_5337 --env_2 crawl_5337
+</code>
+</pre>
+* Jump -> Walk
+<pre>
+<code>
+python -m main --hrl False --train True --irl_training True --env Walker2dJumpHmap-v1 --front False --exp_data_path_1 data/exp_demo/Walker2dJumpHmap-v1_rear_5348 --exp_data_path_2 data/exp_demo/Walker2dForwardHmap-v1_front_5348 --env_1 jump_5348 --env_2 forward_5348
+</code>
+</pre>
+* Crawl -> Walk
+<pre>
+<code>
+python -m main --hrl False --train True --irl_training True --env Walker2dCrawlHmap-v1 --front False --exp_data_path_1 data/exp_demo/Walker2dCrawlHmap-v1_rear_5348 --exp_data_path_2 data/exp_demo/Walker2dForwardHmap-v1_front_5348 --env_1 crawl_5348 --env_2 forward_5348
+</code>
+</pre>
+
+### Train DQNs for Obstacle course
+<pre>
+<code>
+python -m main --hrl True --train True --complex_task obstacle --env Walker2dObstacleCourseHmap-v1 --pi1 data/ppo_forward/ppo_forward_s5348/pyt_save/model.pt --pi2 data/ppo_jump/ppo_jump_s5348/pyt_save/model.pt --pi3 data/ppo_crawl/ppo_crawl_s5348/pyt_save/model.pt --pi12 data/transition/forward_5348_jump_5348/step10000000/model.pt --pi21 data/transition/jump_5348_forward_5348/step10000000/model.pt --pi13 data/transition/forward_5348_crawl_5348/step10000000/model.pt --pi31 data/transition/crawl_5348_forward_5348/step10000000/model.pt --fname obstacle_5348
+</code>
+</pre>
+
+### Test trained networks
+<pre>
+<code>
+python -m main --hrl True --train Fasle --complex_task obstacle --env Walker2dObstacleCourseHmap-v1 --pi1 data/ppo_forward/ppo_forward_s5348/pyt_save/model.pt --pi2 data/ppo_jump/ppo_jump_s5348/pyt_save/model.pt --pi3 data/ppo_crawl/ppo_crawl_s5348/pyt_save/model.pt --pi12 data/transition/forward_5348_jump_5348/step10000000/model.pt --pi21 data/transition/jump_5348_forward_5348/step10000000/model.pt --pi13 data/transition/forward_5348_crawl_5348/step10000000/model.pt --pi31 data/transition/crawl_5348_forward_5348/step10000000/model.pt --q12 data/q_network/obstacle_5348/10000_q12.pt --q21 data/q_network/obstacle_5348/10000_q21.pt --q13 data/q_network/obstacle_5348/10000_q13.pt --q31 data/q_network/obstacle_5348/10000_q31.pt
+</code>
+</pre>
+
+
+### References 
+* https://github.com/openai/spinningup
+* https://github.com/youngwoon/transition
+* https://github.com/ku2482/gail-airl-ppo.pytorch/tree/master/gail_airl_ppo

@@ -1,0 +1,47 @@
+
+<Collect data of pre-trained policy for Catch>
+--(front catch)--
+python -m main --hrl False --train False --complex_task catch --collect_exp_data True --env JacoKeepCatch-v1 --suffix front_123 --seed 123 --primitive_env JacoCatch-v1 --primitive_path data/JacoCatch.catch_ICLR2019_seed123
+python -m main --hrl False --train False --complex_task catch --collect_exp_data True --env JacoKeepCatch-v1 --suffix front_456 --seed 456 --primitive_env JacoCatch-v1 --primitive_path data/JacoCatch.catch_ICLR2019_seed456
+python -m main --hrl False --train False --complex_task catch --collect_exp_data True --env JacoKeepCatch-v1 --suffix front_789 --seed 789 --primitive_env JacoCatch-v1 --primitive_path data/JacoCatch.catch_ICLR2019_seed789
+--(rear catch)--
+python -m main --hrl False --train False --complex_task catch --collect_exp_data True --env JacoCatch-v1 --front False --suffix rear_123 --seed 123 --primitive_env JacoCatch-v1 --primitive_path data/JacoCatch.catch_ICLR2019_seed123
+python -m main --hrl False --train False --complex_task catch --collect_exp_data True --env JacoCatch-v1 --front False --suffix rear_456 --seed 456 --primitive_env JacoCatch-v1 --primitive_path data/JacoCatch.catch_ICLR2019_seed456
+python -m main --hrl False --train False --complex_task catch --collect_exp_data True --env JacoCatch-v1 --front False --suffix rear_789 --seed 789 --primitive_env JacoCatch-v1 --primitive_path data/JacoCatch.catch_ICLR2019_seed789
+
+
+<Train transition policy for Catch>
+--(catch)--
+python -m main --hrl False --train True --irl_training True --complex_task catch --env JacoCatch-v1 --exp_data_path_1 data/exp_demo/JacoCatch-v1_front_123 --exp_data_path_2 data/exp_demo/JacoCatch-v1_rear_123 --env_1 catch_123 --env_2 catch_123_s123 --seed 123
+python -m main --hrl False --train True --irl_training True --complex_task catch --env JacoCatch-v1 --exp_data_path_1 data/exp_demo/JacoCatch-v1_front_456 --exp_data_path_2 data/exp_demo/JacoCatch-v1_rear_456 --env_1 catch_456 --env_2 catch_456_s456 --seed 456
+python -m main --hrl False --train True --irl_training True --complex_task catch --env JacoCatch-v1 --exp_data_path_1 data/exp_demo/JacoCatch-v1_front_789 --exp_data_path_2 data/exp_demo/JacoCatch-v1_rear_789 --env_1 catch_789 --env_2 catch_789_s789 --seed 789
+
+
+<Train Q network for Pick>
+python -m main --hrl True --train True --complex_task catch --env JacoKeepCatch-v1 --pi1_env JacoCatch-v1 --pi1 data/JacoCatch.catch_ICLR2019_seed123 --pi12 data/transition/catch_123_catch_123_s123/step10000000/model.pt --fname catch_123_s123 --seed 123
+python -m main --hrl True --train True --complex_task catch --env JacoKeepCatch-v1 --pi1_env JacoCatch-v1 --pi1 data/JacoCatch.catch_ICLR2019_seed456 --pi12 data/transition/catch_456_catch_456_s456/step10000000/model.pt --fname catch_456_s456 --seed 456
+python -m main --hrl True --train True --complex_task catch --env JacoKeepCatch-v1 --pi1_env JacoCatch-v1 --pi1 data/JacoCatch.catch_ICLR2019_seed789 --pi12 data/transition/catch_789_catch_789_s789/step10000000/model.pt --fname catch_789_s789 --seed 789
+
+<Evaluate trained networks>
+python -m main --hrl True --train Fasle --complex_task catch --env JacoKeepCatch-v1 --pi1_env JacoCatch-v1 --pi1 data/JacoCatch.catch_ICLR2019_seed123 --pi12 data/transition/catch_123_catch_123_s123/step10000000/model.pt --q12 data/q_network/catch_123_s123/30000_q12.pt --seed 123
+python -m main --hrl True --train Fasle --complex_task catch --env JacoKeepCatch-v1 --pi1_env JacoCatch-v1 --pi1 data/JacoCatch.catch_ICLR2019_seed456 --pi12 data/transition/catch_456_catch_456_s456/step10000000/model.pt --q12 data/q_network/catch_456_s456/30000_q12.pt --seed 456
+python -m main --hrl True --train Fasle --complex_task catch --env JacoKeepCatch-v1 --pi1_env JacoCatch-v1 --pi1 data/JacoCatch.catch_ICLR2019_seed789 --pi12 data/transition/catch_789_catch_789_s789/step10000000/model.pt --q12 data/q_network/catch_789_s789/30000_q12.pt --seed 789
+
+
+--expand--
+<Train transition policy for Catch>
+python -m main --hrl False --train True --irl_training True --complex_task catch --env JacoCatch-v1 --exp_data_path_1 data/exp_demo/JacoCatch-v1_front_123 --exp_data_path_2 data/exp_demo/JacoCatch-v1_rear_123 --env_1 catch_123 --env_2 catch_123_s123 --seed 123
+python -m main --hrl False --train True --irl_training True --complex_task catch --env JacoCatch-v1 --exp_data_path_1 data/exp_demo/JacoCatch-v1_front_123 --exp_data_path_2 data/exp_demo/JacoCatch-v1_rear_123 --env_1 catch_123 --env_2 catch_123_s456 --seed 456
+python -m main --hrl False --train True --irl_training True --complex_task catch --env JacoCatch-v1 --exp_data_path_1 data/exp_demo/JacoCatch-v1_front_123 --exp_data_path_2 data/exp_demo/JacoCatch-v1_rear_123 --env_1 catch_123 --env_2 catch_123_s789 --seed 789
+
+
+<Train Q network for Pick>
+python -m main --hrl True --train True --complex_task catch --env JacoKeepCatch-v1 --pi1_env JacoCatch-v1 --pi1 data/JacoCatch.catch_ICLR2019_seed123 --pi12 data/transition/catch_123_catch_123_s123/step10000000/model.pt --fname catch_123_s123 --seed 123
+python -m main --hrl True --train True --complex_task catch --env JacoKeepCatch-v1 --pi1_env JacoCatch-v1 --pi1 data/JacoCatch.catch_ICLR2019_seed123 --pi12 data/transition/catch_123_catch_123_s456/step10000000/model.pt --fname catch_123_s456 --seed 456
+python -m main --hrl True --train True --complex_task catch --env JacoKeepCatch-v1 --pi1_env JacoCatch-v1 --pi1 data/JacoCatch.catch_ICLR2019_seed123 --pi12 data/transition/catch_123_catch_123_s789/step10000000/model.pt --fname catch_123_s789 --seed 789
+
+<Evaluate trained networks>
+python -m main --hrl True --train Fasle --complex_task catch --env JacoKeepCatch-v1 --pi1_env JacoCatch-v1 --pi1 data/JacoCatch.catch_ICLR2019_seed123 --pi12 data/transition/catch_123_catch_123_s123/step10000000/model.pt --q12 data/q_network/catch_123_s123/20000_q12.pt --seed 123
+python -m main --hrl True --train Fasle --complex_task catch --env JacoKeepCatch-v1 --pi1_env JacoCatch-v1 --pi1 data/JacoCatch.catch_ICLR2019_seed123 --pi12 data/transition/catch_123_catch_123_s456/step10000000/model.pt --q12 data/q_network/catch_123_s456/20000_q12.pt --seed 456
+python -m main --hrl True --train Fasle --complex_task catch --env JacoKeepCatch-v1 --pi1_env JacoCatch-v1 --pi1 data/JacoCatch.catch_ICLR2019_seed123 --pi12 data/transition/catch_123_catch_123_s789/step10000000/model.pt --q12 data/q_network/catch_123_s789/20000_q12.pt --seed 789
+

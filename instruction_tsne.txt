@@ -1,0 +1,45 @@
+python -m pcatsne_data_collect --complex_task obstacle --env Walker2dObstacleCourse-v1 --pi1_env Walker2dForward-v1 --pi2_env Walker2dJump-v1 --pi1 data/Walker2dForward.forward_ICLR2019_seed123 --pi2 data/Walker2dJump.jump_ICLR2019_seed123 --pi12 data/transition/obstacle_walk_123_jump_123_s123/step10000000/model.pt --seed 123
+
+python -m pcatsne_data_collect --complex_task obstacle --env Walker2dObstacleCourse-v1 --pi1_env Walker2dForward-v1 --pi2_env Walker2dJump-v1 --pi1 data/Walker2dForward.forward_ICLR2019_seed123 --pi2 data/Walker2dJump.jump_ICLR2019_seed123 --pi12 data/transition/obstacle_jump_123_walk_123_s123/step10000000/model.pt --seed 123
+
+python -m pcatsne_data_collect --complex_task obstacle --env Walker2dObstacleCourse-v1 --pi1_env Walker2dForward-v1 --pi2_env Walker2dCrawl-v1 --pi1 data/Walker2dForward.forward_ICLR2019_seed123 --pi2 data/Walker2dCrawl.crawl_ICLR2019_seed123 --pi12 data/transition/obstacle_walk_123_crawl_123_s123/step10000000/model.pt --seed 123
+
+
+python -m pcatsne_data_collect --complex_task patrol --env Walker2dForward-v1 --pi1_env Walker2dForward-v1 --pi2_env Walker2dBalance-v1 --pi1 data/Walker2dForward.forward_ICLR2019_seed123 --pi2 data/Walker2dBalance.balance_ICLR2019_seed123 --pi12 data/transition/patrol_forward_123_balance_123_s123/step10000000/model.pt --seed 123
+python -m pcatsne_data_collect --complex_task patrol_back --env Walker2dBackward-v1 --pi1_env Walker2dBackward-v1 --pi2_env Walker2dBalance-v1 --pi1 data/Walker2dBackward.backward_ICLR2019_seed123 --pi2 data/Walker2dBalance.balance_ICLR2019_seed123 --pi12 data/transition/patrol_backward_123_balance_123_s123/step10000000/model.pt --seed 123
+
+python -m pcatsne_data_collect --complex_task serve --env JacoServe-v1 --pi1_env JacoToss-v1 --pi2_env JacoHit-v1 --pi1 data/JacoToss.toss_ICLR2019_seed789 --pi2 data/JacoHit.hit_ICLR2019_seed789 --pi12 data/transition/toss_789_hit_789_s123/step10000000/model.pt --seed 123
+
+
+python -m pcatsne --complex_task obstacle --seed 123 --perplexity 1
+python -m pcatsne --complex_task obstacle --seed 123 --perplexity 2
+python -m pcatsne --complex_task obstacle --seed 123 --perplexity 3
+python -m pcatsne --complex_task obstacle --seed 123 --perplexity 4
+python -m pcatsne --complex_task obstacle --seed 123 --perplexity 5
+python -m pcatsne --complex_task obstacle --seed 123 --perplexity 10
+python -m pcatsne --complex_task obstacle --seed 123 --perplexity 20
+python -m pcatsne --complex_task obstacle --seed 123 --perplexity 30
+python -m pcatsne --complex_task obstacle --seed 123 --perplexity 40
+python -m pcatsne --complex_task obstacle --seed 123 --perplexity 60
+python -m pcatsne --complex_task obstacle --seed 123 --perplexity 80
+python -m pcatsne --complex_task obstacle --seed 123 --perplexity 100
+
+python -m pcatsne --complex_task patrol_back --seed 123 --perplexity 3
+python -m pcatsne --complex_task patrol_back --seed 123 --perplexity 4
+python -m pcatsne --complex_task patrol_back --seed 123 --perplexity 5
+python -m pcatsne --complex_task patrol_back --seed 123 --perplexity 10
+python -m pcatsne --complex_task patrol_back --seed 123 --perplexity 20
+
+python -m pcatsne --complex_task patrol --seed 123 --perplexity 3
+python -m pcatsne --complex_task patrol --seed 123 --perplexity 4
+python -m pcatsne --complex_task patrol --seed 123 --perplexity 5
+python -m pcatsne --complex_task patrol --seed 123 --perplexity 10
+python -m pcatsne --complex_task patrol --seed 123 --perplexity 20
+
+python -m pcatsne --complex_task serve --seed 123 --perplexity 3
+python -m pcatsne --complex_task serve --seed 123 --perplexity 4
+python -m pcatsne --complex_task serve --seed 123 --perplexity 5
+python -m pcatsne --complex_task serve --seed 123 --perplexity 10
+python -m pcatsne --complex_task serve --seed 123 --perplexity 20
+
+

@@ -1,0 +1,82 @@
+
+<Collect data of pre-trained policy for Hurdle Walk, Jump>
+--(front walk)--
+python -m main --hrl False --train False --complex_task hurdle --collect_exp_data True --env Walker2dJump-v1 --suffix front_123 --seed 123 --primitive_env Walker2dForward-v1 --primitive_path data/Walker2dForward.forward_ICLR2019_seed123
+python -m main --hrl False --train False --complex_task hurdle --collect_exp_data True --env Walker2dJump-v1 --suffix front_456 --seed 456 --primitive_env Walker2dForward-v1 --primitive_path data/Walker2dForward.forward_ICLR2019_seed456
+python -m main --hrl False --train False --complex_task hurdle --collect_exp_data True --env Walker2dJump-v1 --suffix front_789 --seed 789 --primitive_env Walker2dForward-v1 --primitive_path data/Walker2dForward.forward_ICLR2019_seed789
+--(rear walk)--
+python -m main --hrl False --train False --complex_task hurdle --collect_exp_data True --env Walker2dJump-v1 --front False --suffix rear_123 --seed 123 --primitive_env Walker2dForward-v1 --primitive_path data/Walker2dForward.forward_ICLR2019_seed123
+python -m main --hrl False --train False --complex_task hurdle --collect_exp_data True --env Walker2dJump-v1 --front False --suffix rear_456 --seed 456 --primitive_env Walker2dForward-v1 --primitive_path data/Walker2dForward.forward_ICLR2019_seed456
+python -m main --hrl False --train False --complex_task hurdle --collect_exp_data True --env Walker2dJump-v1 --front False --suffix rear_789 --seed 789 --primitive_env Walker2dForward-v1 --primitive_path data/Walker2dForward.forward_ICLR2019_seed789
+
+--(front jump)--
+python -m main --hrl False --train False --complex_task hurdle --collect_exp_data True --env Walker2dJump-v1 --suffix front_123 --seed 123 --primitive_env Walker2dJump-v1 --primitive_path data/Walker2dJump.jump_ICLR2019_seed123
+python -m main --hrl False --train False --complex_task hurdle --collect_exp_data True --env Walker2dJump-v1 --suffix front_456 --seed 456 --primitive_env Walker2dJump-v1 --primitive_path data/Walker2dJump.jump_ICLR2019_seed456
+python -m main --hrl False --train False --complex_task hurdle --collect_exp_data True --env Walker2dJump-v1 --suffix front_789 --seed 789 --primitive_env Walker2dJump-v1 --primitive_path data/Walker2dJump.jump_ICLR2019_seed789
+--(rear jump)--
+python -m main --hrl False --train False --complex_task hurdle --collect_exp_data True --env Walker2dJump-v1 --front False --suffix rear_123 --seed 123 --primitive_env Walker2dJump-v1 --primitive_path data/Walker2dJump.jump_ICLR2019_seed123
+python -m main --hrl False --train False --complex_task hurdle --collect_exp_data True --env Walker2dJump-v1 --front False --suffix rear_456 --seed 456 --primitive_env Walker2dJump-v1 --primitive_path data/Walker2dJump.jump_ICLR2019_seed456
+python -m main --hrl False --train False --complex_task hurdle --collect_exp_data True --env Walker2dJump-v1 --front False --suffix rear_789 --seed 789 --primitive_env Walker2dJump-v1 --primitive_path data/Walker2dJump.jump_ICLR2019_seed789
+
+
+<Train transition policy for Hurdle Walk->Jump>
+--(front)--
+python -m main --hrl False --train True --irl_training True --complex_task hurdle --env Walker2dJump-v1 --exp_data_path_1 data/exp_demo/Walker2dForward-v1_front_123 --exp_data_path_2 data/exp_demo/Walker2dJump-v1_rear_123 --env_1 walk_123 --env_2 jump_123 --seed 123
+python -m main --hrl False --train True --irl_training True --complex_task hurdle --env Walker2dJump-v1 --exp_data_path_1 data/exp_demo/Walker2dForward-v1_front_456 --exp_data_path_2 data/exp_demo/Walker2dJump-v1_rear_456 --env_1 walk_456 --env_2 jump_456 --seed 456
+python -m main --hrl False --train True --irl_training True --complex_task hurdle --env Walker2dJump-v1 --exp_data_path_1 data/exp_demo/Walker2dForward-v1_front_789 --exp_data_path_2 data/exp_demo/Walker2dJump-v1_rear_789 --env_1 walk_789 --env_2 jump_789 --seed 789
+
+--(rear)--
+python -m main --hrl False --train True --irl_training True --complex_task hurdle --env Walker2dJump-v1 --front False --exp_data_path_1 data/exp_demo/Walker2dJump-v1_front_123 --exp_data_path_2 data/exp_demo/Walker2dForward-v1_rear_123 --env_1 jump_123 --env_2 walk_123 --seed 123
+python -m main --hrl False --train True --irl_training True --complex_task hurdle --env Walker2dJump-v1 --front False --exp_data_path_1 data/exp_demo/Walker2dJump-v1_front_456 --exp_data_path_2 data/exp_demo/Walker2dForward-v1_rear_456 --env_1 jump_456 --env_2 walk_456 --seed 456
+python -m main --hrl False --train True --irl_training True --complex_task hurdle --env Walker2dJump-v1 --front False --exp_data_path_1 data/exp_demo/Walker2dJump-v1_front_789 --exp_data_path_2 data/exp_demo/Walker2dForward-v1_rear_789 --env_1 jump_789 --env_2 walk_789 --seed 789
+
+
+<Train Q network for Hurdle>
+python -m main --hrl True --train True --complex_task hurdle --env Walker2dHurdle-v1 --pi1_env Walker2dForward-v1 --pi2_env Walker2dJump-v1 --pi1 data/Walker2dForward.forward_ICLR2019_seed123 --pi2 data/Walker2dJump.jump_ICLR2019_seed123 --pi12 data/transition/walk_123_jump_123/step10000000/model.pt --pi21 data/transition/jump_123_walk_123/step10000000/model.pt --fname hurdle_123 --seed 123
+python -m main --hrl True --train True --complex_task hurdle --env Walker2dHurdle-v1 --pi1_env Walker2dForward-v1 --pi2_env Walker2dJump-v1 --pi1 data/Walker2dForward.forward_ICLR2019_seed456 --pi2 data/Walker2dJump.jump_ICLR2019_seed456 --pi12 data/transition/walk_456_jump_456/step10000000/model.pt --pi21 data/transition/jump_456_walk_456/step10000000/model.pt --fname hurdle_456 --seed 456
+python -m main --hrl True --train True --complex_task hurdle --env Walker2dHurdle-v1 --pi1_env Walker2dForward-v1 --pi2_env Walker2dJump-v1 --pi1 data/Walker2dForward.forward_ICLR2019_seed789 --pi2 data/Walker2dJump.jump_ICLR2019_seed789 --pi12 data/transition/walk_789_jump_789/step10000000/model.pt --pi21 data/transition/jump_789_walk_789/step10000000/model.pt --fname hurdle_789 --seed 789
+
+<Evaluate trained networks>
+python -m main --hrl True --train Fasle --complex_task hurdle --env Walker2dHurdle-v1 --pi1_env Walker2dForward-v1 --pi2_env Walker2dJump-v1 --pi1 data/Walker2dForward.forward_ICLR2019_seed123 --pi2 data/Walker2dJump.jump_ICLR2019_seed123 --pi12 data/transition/walk_123_jump_123/step10000000/model.pt --pi21 data/transition/jump_123_walk_123/step10000000/model.pt --q12 data/q_network/hurdle_123_10/10000_1.0_q12.pt --q21 data/q_network/hurdle_123_10/10000_1.0_q21.pt --seed 123
+python -m main --hrl True --train Fasle --complex_task hurdle --env Walker2dHurdle-v1 --pi1_env Walker2dForward-v1 --pi2_env Walker2dJump-v1 --pi1 data/Walker2dForward.forward_ICLR2019_seed456 --pi2 data/Walker2dJump.jump_ICLR2019_seed456 --pi12 data/transition/walk_456_jump_456/step10000000/model.pt --pi21 data/transition/jump_456_walk_456/step10000000/model.pt --q12 data/q_network/hurdle_456_10/10000_1.0_q12.pt --q21 data/q_network/hurdle_456_10/10000_1.0_q21.pt --seed 456
+
+
+---expand---
+
+<Train transition policy for Hurdle Walk->Jump>
+--(front)--
+python -m main --hrl False --train True --irl_training True --complex_task hurdle --env Walker2dJump-v1 --exp_data_path_1 data/exp_demo/Walker2dForward-v1_front_123 --exp_data_path_2 data/exp_demo/Walker2dJump-v1_rear_123 --env_1 walk_123 --env_2 jump_123_s456 --seed 456
+python -m main --hrl False --train True --irl_training True --complex_task hurdle --env Walker2dJump-v1 --exp_data_path_1 data/exp_demo/Walker2dForward-v1_front_123 --exp_data_path_2 data/exp_demo/Walker2dJump-v1_rear_123 --env_1 walk_123 --env_2 jump_123_s789 --seed 789
+
+python -m main --hrl False --train True --irl_training True --complex_task hurdle --env Walker2dJump-v1 --exp_data_path_1 data/exp_demo/Walker2dForward-v1_front_456 --exp_data_path_2 data/exp_demo/Walker2dJump-v1_rear_456 --env_1 walk_456 --env_2 jump_456_s123 --seed 123
+python -m main --hrl False --train True --irl_training True --complex_task hurdle --env Walker2dJump-v1 --exp_data_path_1 data/exp_demo/Walker2dForward-v1_front_456 --exp_data_path_2 data/exp_demo/Walker2dJump-v1_rear_456 --env_1 walk_456 --env_2 jump_456_s789 --seed 789
+
+--(rear)--
+python -m main --hrl False --train True --irl_training True --complex_task hurdle --env Walker2dJump-v1 --front False --exp_data_path_1 data/exp_demo/Walker2dJump-v1_front_123 --exp_data_path_2 data/exp_demo/Walker2dForward-v1_rear_123 --env_1 jump_123 --env_2 walk_123_s456 --seed 456
+python -m main --hrl False --train True --irl_training True --complex_task hurdle --env Walker2dJump-v1 --front False --exp_data_path_1 data/exp_demo/Walker2dJump-v1_front_123 --exp_data_path_2 data/exp_demo/Walker2dForward-v1_rear_123 --env_1 jump_123 --env_2 walk_123_s789 --seed 789
+
+python -m main --hrl False --train True --irl_training True --complex_task hurdle --env Walker2dJump-v1 --front False --exp_data_path_1 data/exp_demo/Walker2dJump-v1_front_456 --exp_data_path_2 data/exp_demo/Walker2dForward-v1_rear_456 --env_1 jump_456 --env_2 walk_456_s123 --seed 123
+python -m main --hrl False --train True --irl_training True --complex_task hurdle --env Walker2dJump-v1 --front False --exp_data_path_1 data/exp_demo/Walker2dJump-v1_front_456 --exp_data_path_2 data/exp_demo/Walker2dForward-v1_rear_456 --env_1 jump_456 --env_2 walk_456_s789 --seed 789
+
+
+<Train Q network for Hurdle>
+python -m main --hrl True --train True --complex_task hurdle --env Walker2dHurdle-v1 --pi1_env Walker2dForward-v1 --pi2_env Walker2dJump-v1 --pi1 data/Walker2dForward.forward_ICLR2019_seed123 --pi2 data/Walker2dJump.jump_ICLR2019_seed123 --pi12 data/transition/walk_123_jump_123_s123/step10000000/model.pt --pi21 data/transition/jump_123_walk_123_s123/step10000000/model.pt --fname hurdle_123_s123 --seed 123
+python -m main --hrl True --train True --complex_task hurdle --env Walker2dHurdle-v1 --pi1_env Walker2dForward-v1 --pi2_env Walker2dJump-v1 --pi1 data/Walker2dForward.forward_ICLR2019_seed123 --pi2 data/Walker2dJump.jump_ICLR2019_seed123 --pi12 data/transition/walk_123_jump_123_s456/step10000000/model.pt --pi21 data/transition/jump_123_walk_123_s456/step10000000/model.pt --fname hurdle_123_s456 --seed 456
+python -m main --hrl True --train True --complex_task hurdle --env Walker2dHurdle-v1 --pi1_env Walker2dForward-v1 --pi2_env Walker2dJump-v1 --pi1 data/Walker2dForward.forward_ICLR2019_seed123 --pi2 data/Walker2dJump.jump_ICLR2019_seed123 --pi12 data/transition/walk_123_jump_123_s789/step10000000/model.pt --pi21 data/transition/jump_123_walk_123_s789/step10000000/model.pt --fname hurdle_123_s789 --seed 789
+
+
+python -m main --hrl True --train True --complex_task hurdle --env Walker2dHurdle-v1 --pi1_env Walker2dForward-v1 --pi2_env Walker2dJump-v1 --pi1 data/Walker2dForward.forward_ICLR2019_seed456 --pi2 data/Walker2dJump.jump_ICLR2019_seed456 --pi12 data/transition/walk_456_jump_456_s123/step10000000/model.pt --pi21 data/transition/jump_456_walk_456_s123/step10000000/model.pt --fname hurdle_456_s123 --seed 123
+python -m main --hrl True --train True --complex_task hurdle --env Walker2dHurdle-v1 --pi1_env Walker2dForward-v1 --pi2_env Walker2dJump-v1 --pi1 data/Walker2dForward.forward_ICLR2019_seed456 --pi2 data/Walker2dJump.jump_ICLR2019_seed456 --pi12 data/transition/walk_456_jump_456_s456/step10000000/model.pt --pi21 data/transition/jump_456_walk_456_s456/step10000000/model.pt --fname hurdle_456_s456 --seed 456
+python -m main --hrl True --train True --complex_task hurdle --env Walker2dHurdle-v1 --pi1_env Walker2dForward-v1 --pi2_env Walker2dJump-v1 --pi1 data/Walker2dForward.forward_ICLR2019_seed456 --pi2 data/Walker2dJump.jump_ICLR2019_seed456 --pi12 data/transition/walk_456_jump_456_s789/step10000000/model.pt --pi21 data/transition/jump_456_walk_456_s789/step10000000/model.pt --fname hurdle_456_s789 --seed 789
+
+
+<Evaluate trained networks>
+python -m main --hrl True --train Fasle --complex_task hurdle --env Walker2dHurdle-v1 --pi1_env Walker2dForward-v1 --pi2_env Walker2dJump-v1 --pi1 data/Walker2dForward.forward_ICLR2019_seed123 --pi2 data/Walker2dJump.jump_ICLR2019_seed123 --pi12 data/transition/walk_123_jump_123_s123/step10000000/model.pt --pi21 data/transition/jump_123_walk_123_s123/step10000000/model.pt --q12 data/q_network/hurdle_123_s123/30000_q12.pt --q21 data/q_network/hurdle_123_s123/30000_q21.pt --seed 123
+python -m main --hrl True --train Fasle --complex_task hurdle --env Walker2dHurdle-v1 --pi1_env Walker2dForward-v1 --pi2_env Walker2dJump-v1 --pi1 data/Walker2dForward.forward_ICLR2019_seed123 --pi2 data/Walker2dJump.jump_ICLR2019_seed123 --pi12 data/transition/walk_123_jump_123_s456/step10000000/model.pt --pi21 data/transition/jump_123_walk_123_s456/step10000000/model.pt --q12 data/q_network/hurdle_123_s456/30000_q12.pt --q21 data/q_network/hurdle_123_s456/30000_q21.pt --seed 456
+python -m main --hrl True --train Fasle --complex_task hurdle --env Walker2dHurdle-v1 --pi1_env Walker2dForward-v1 --pi2_env Walker2dJump-v1 --pi1 data/Walker2dForward.forward_ICLR2019_seed123 --pi2 data/Walker2dJump.jump_ICLR2019_seed123 --pi12 data/transition/walk_123_jump_123_s789/step10000000/model.pt --pi21 data/transition/jump_123_walk_123_s789/step10000000/model.pt --q12 data/q_network/hurdle_123_s789/30000_q12.pt --q21 data/q_network/hurdle_123_s789/30000_q21.pt --seed 789
+
+python -m main --hrl True --train Fasle --complex_task hurdle --env Walker2dHurdle-v1 --pi1_env Walker2dForward-v1 --pi2_env Walker2dJump-v1 --pi1 data/Walker2dForward.forward_ICLR2019_seed456 --pi2 data/Walker2dJump.jump_ICLR2019_seed456 --pi12 data/transition/walk_456_jump_456_s123/step10000000/model.pt --pi21 data/transition/jump_456_walk_456_s123/step10000000/model.pt --q12 data/q_network/hurdle_456_s123/30000_q12.pt --q21 data/q_network/hurdle_456_s123/20000_q21.pt --seed 123
+python -m main --hrl True --train Fasle --complex_task hurdle --env Walker2dHurdle-v1 --pi1_env Walker2dForward-v1 --pi2_env Walker2dJump-v1 --pi1 data/Walker2dForward.forward_ICLR2019_seed456 --pi2 data/Walker2dJump.jump_ICLR2019_seed456 --pi12 data/transition/walk_456_jump_456_s456/step10000000/model.pt --pi21 data/transition/jump_456_walk_456_s456/step10000000/model.pt --q12 data/q_network/hurdle_456_s456/30000_q12.pt --q21 data/q_network/hurdle_456_s456/20000_q21.pt --seed 456
+python -m main --hrl True --train Fasle --complex_task hurdle --env Walker2dHurdle-v1 --pi1_env Walker2dForward-v1 --pi2_env Walker2dJump-v1 --pi1 data/Walker2dForward.forward_ICLR2019_seed456 --pi2 data/Walker2dJump.jump_ICLR2019_seed456 --pi12 data/transition/walk_456_jump_456_s789/step10000000/model.pt --pi21 data/transition/jump_456_walk_456_s789/step10000000/model.pt --q12 data/q_network/hurdle_456_s789/30000_q12.pt --q21 data/q_network/hurdle_456_s789/20000_q21.pt --seed 789
+
+
